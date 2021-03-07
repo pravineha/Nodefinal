@@ -7,13 +7,25 @@ var rfs = require('rotating-file-stream') // version 2.x
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const {graphqlHTTP} = require('express-graphql'); //Pravin -- Node GraphQL Library
-const schema = require('./schema/schema');//Pravin -- Importing the schema
+const generalSchema = require('./schema/generalSchema');//Pravin -- Importing the schema
+const adminSchema = require('./schema/adminSchema');//Pravin -- Importing the schema
+const userSchema = require('./schema/usersSchema');
 const mongoose = require('mongoose');
+const auth =  require('./auth');
+const verifyToken =  require("./auth/verifyToken");
 // const MongoClient  = require('mongoose').MongoClient;
 var app = express();
 const cors = require('cors');
 //Mongo DB where we connect
 const mongoDBURI = 'mongodb+srv://sam:y1oOZo03nNkk3m1R@cluster0.nzptr.mongodb.net/Ecom?retryWrites=true&w=majority';
+const adminMiddleware = (req, res, next) => {
+  if(req.user && req.user.role == 44){
+    next();
+  }else{
+      return res.status(404).send('Permission denied'); 
+  } 
+     
+}
 
 app.use(cors());
 var accessLogStream = rfs.createStream('access.log', {
@@ -33,16 +45,62 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/auth',auth);
+
 app.use('/users', usersRouter);
+
 //Graphql Node server path
-app.use('/graphql', graphqlHTTP({      //Pravin -- This can be SelvitrendsQL
+// app.use(loggingMiddleware);
+app.use('/general', graphqlHTTP({      //Pravin -- This can be SelvitrendsQL
   //directing express-graphql to use this schema to map out the graph 
   //Pravin -- This is where we have written all our functions
-  schema,
+  schema:generalSchema,
   //directing express-graphql to use graphiql when goto '/graphql' address in the browser
   //which provides an interface to make GraphQl queries
   graphiql:true
 }));
+
+
+// app.use('/admin', graphqlHTTP({      //Pravin -- This can be SelvitrendsQL
+//   //directing express-graphql to use this schema to map out the graph 
+//   //Pravin -- This is where we have written all our functions
+//   schema:adminSchema,
+//   // context:{user:"swami"},
+//   //directing express-graphql to use graphiql when goto '/graphql' address in the browser
+//   //which provides an interface to make GraphQl queries
+//   graphiql:true
+// }));
+
+app.use(verifyToken);
+app.use('/generalUser',(req,res) => {
+ return graphqlHTTP({      //Pravin -- This can be SelvitrendsQL
+    //directing express-graphql to use this schema to map out the graph 
+    //Pravin -- This is where we have written all our functions
+    schema:userSchema,
+    context:{user:req.user.id},
+    //directing express-graphql to use graphiql when goto '/graphql' address in the browser
+    //which provides an interface to make GraphQl queries
+    graphiql:true
+  })(req, res);
+});
+
+app.use(adminMiddleware);
+app.use('/admin',(req,res) => {
+  return graphqlHTTP({      //Pravin -- This can be SelvitrendsQL
+     //directing express-graphql to use this schema to map out the graph 
+     //Pravin -- This is where we have written all our functions
+     schema:adminSchema,
+     context:{user:req.user},
+     //directing express-graphql to use graphiql when goto '/graphql' address in the browser
+     //which provides an interface to make GraphQl queries
+     graphiql:true
+   })(req, res);
+ });
+
+
+ // Create order comes here  
+ 
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

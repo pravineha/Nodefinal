@@ -161,4 +161,53 @@ mutation{
   }
 }
 
+mutation{
+  addProduct(name:"Trouser",
+    sectionId:"6029ca331250020f233fa127",
+    img:"https://cdn.shopify.com/s/files/1/0752/6435/products/4_7baa33bf-b922-42e6-b05f-c362617a4224_765x.jpg?v=1603948797",
+    measurements:[
+      {name:"XL",sizename:"hip",size:"34"},
+      {name:"L",sizename:"hip",size:"30"},
+      {name:"M",sizename:"hip",size:"28"},
+      {name:"S",sizename:"hip",size:"24"},
+      {name:"XL",sizename:"length",size:"20"},
+      {name:"L",sizename:"length",size:"18"},
+      {name:"M",sizename:"length",size:"16"},
+      {name:"S",sizename:"length",size:"14"},
+      {name:"XL",sizename:"thigh",size:"22"},
+      {name:"L",sizename:"thigh",size:"24"},
+      {name:"M",sizename:"thigh",size:"26"},
+      {name:"S",sizename:"thigh",size:"28"}]){
+    id,
+    name,
+    sectionId,
+    measurements{
+    	name,
+      sizename,
+      size
+  }
+  }
+}
+
+
+{
+  createOrder(
+    productList:[{
+      productId:"601f222b22fe4b1ce8b3e2c2",
+      measurements:[{
+        name:"XL",
+        sizename:"hip",
+        size:"30"
+      }],
+      createdFor:"laxmi",
+      address:"21/A kk nagar,Anna salai"
+    }],
+    mobile:"7406077682"
+  ) {
+   id,
+  productList{productId,createdFor,address,measurements{name,size,sizename}},
+   createdBy,mobile
+  }
+}
+
 ***************************Mutation************************************

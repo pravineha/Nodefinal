@@ -9,6 +9,7 @@ const Product = require('../models/product');
 const Section =  require("../models/section");
 const Bussiness =  require("../models/bussiness");
 
+
 const RandomDieType = new GraphQLObjectType({
     name : 'randomDie',
   fields: () => ({
@@ -63,6 +64,22 @@ const MeasureMentTypeOutPut =  new GraphQLObjectType({
     })
 })
 
+const UserType = new GraphQLObjectType({
+    name : "User",
+    fields:() => ({
+        name:{type:GraphQLString},
+        id:{type:GraphQLString},
+        createdDate:{type:GraphQLString},
+        email:{type:GraphQLString},
+        img:{type:GraphQLString},
+        address:{type:GraphQLString},
+        mobile:{type:GraphQLString},
+        role:{type:GraphQLInt,defaultValue: 0},
+        password:{type:GraphQLString}
+     
+    })
+})
+
 const ProductType = new GraphQLObjectType({
     name:"Product",
     fields:() => ({
@@ -75,6 +92,46 @@ const ProductType = new GraphQLObjectType({
            type: new GraphQLList(MeasureMentTypeOutPut),
        
         }
+    })
+})
+
+const OrderProductInputType = new GraphQLInputObjectType({
+    name:"orderProductInut",
+    fields:() => ({
+        productId : { type: GraphQLString }, 
+        measurements:{
+            type: new GraphQLList(MeasureMentType),
+        
+        },
+        createdFor:{ type: GraphQLString },
+        address:{ type: GraphQLString },
+    })
+})
+
+
+const Order = new GraphQLObjectType({
+    name:"order",
+    fields:() => ({
+        productId : { type: GraphQLString }, 
+        measurements:{
+            type: new GraphQLList(MeasureMentTypeOutPut),
+        
+        },
+        createdFor:{ type: GraphQLString },
+        address:{ type: GraphQLString },
+    })
+})
+
+const OrderType = new GraphQLObjectType({
+    name:"orderType",
+    fields:() => ({
+        id:{ type: GraphQLString },
+        productList:{
+            type: GraphQLList(Order)
+        },
+        mobile:{ type: GraphQLString },
+        createdDate:{ type: GraphQLString },
+        createdBy:{ type: GraphQLString }
     })
 })
 
@@ -152,5 +209,5 @@ const BussinessType = new GraphQLObjectType({
 });
 
 module.exports = {
-    RandomDieType,BookType,IndustryType,BussinessType,CategoryType,SectionType,ProductType,MeasureMentType
+    RandomDieType,BookType,IndustryType,BussinessType,CategoryType,OrderType,OrderProductInputType,SectionType,ProductType,UserType,MeasureMentType
 }
