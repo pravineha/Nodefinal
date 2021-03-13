@@ -29,7 +29,7 @@ const UserQuery  = new GraphQLObjectType({
                   productList: {type:new GraphQLList(OrderProductInputType)},
                   mobile:{ type: GraphQLString },
               },resolve(parents,args,root){
-                 // console.log("CreatedBY",root.user)
+                 console.log("order",args.productList)
                 let order = new OrdersSchema({
                     productList:[...args.productList],
                     createdBy:root.user,

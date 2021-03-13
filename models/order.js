@@ -9,12 +9,13 @@ const OrdersSchema = new Schema({
             sizename:{type:String},
             size:{type:String}
         }],
-        createdFor:{type:String},
-        address:{ type: String },
+        createdFor:{type:String,default:"self"},
+        address:{ type: String,default:"self" },
+        quantity:{type:Number,default:1},
     }],
     createdBy:{type: mongoose.Schema.Types.ObjectId, ref: 'users'},
     mobile:{ type: String },
-    createdDate:{type:String}
+    createdDate: {type: Date, default: Date.now},
 });
 
 module.exports = mongoose.model('order', OrdersSchema);

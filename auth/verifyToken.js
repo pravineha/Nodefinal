@@ -7,19 +7,20 @@ function verifyToken(req, res, next) {
   // check header or url parameters or post parameters for token
   // var token = req.headers['x-access-token'];
   var cookies = parseCookies(req);
-  var token = cookies && cookies.authToken ?  cookies.authToken : null ;
- //  console.log("cookies",cookies)
+  // var token = cookies && cookies.authToken ?  cookies.authToken : null ;
+  var token = req.headers.authorization;
+   console.log("REQUEST HEADER",JSON.stringify(req.headers));
   if (!token) 
-    return res.status(403).send({ auth: false, message: 'No token provided.' });
+    return res.status(200).send({ data:{errorCode:403,message:"No token"}, auth: false});
 
   // verifies secret and checks exp
   jwt.verify(token, config.secret, function(err, decoded) {      
     if (err) 
-      return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });    
+      return res.status(200).send({data:{errorCode:500,message:"server error"}, auth: false });    
 
       User.findById(decoded.id, (err,user)=>{
         if (err) return res.status(500).send('Error on the server.');
-        if (!user) return res.status(404).send('No user found.');
+        if (!user) return res.status(200).send({data:{errorCode:403,message:"No token"}, auth: false });
         req.user = {id:user.id,role:user.role};
         next();
       })  

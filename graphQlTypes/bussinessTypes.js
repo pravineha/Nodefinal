@@ -96,7 +96,7 @@ const ProductType = new GraphQLObjectType({
 })
 
 const OrderProductInputType = new GraphQLInputObjectType({
-    name:"orderProductInut",
+    name:"orderProductInput",
     fields:() => ({
         productId : { type: GraphQLString }, 
         measurements:{
@@ -105,6 +105,7 @@ const OrderProductInputType = new GraphQLInputObjectType({
         },
         createdFor:{ type: GraphQLString },
         address:{ type: GraphQLString },
+        quantity:{type:new GraphQLNonNull(GraphQLInt)}
     })
 })
 
