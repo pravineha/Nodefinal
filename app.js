@@ -33,8 +33,9 @@ var accessLogStream = rfs.createStream('access.log', {
   path: path.join(__dirname, 'log')
 })
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'pug');
+app.use(express.static('views'))
 
 app.use(logger('dev'));
 // setup the logger
@@ -90,13 +91,13 @@ app.use('/general', graphqlHTTP({      //Pravin -- This can be SelvitrendsQL
 //   graphiql:true
 // }));
 
-app.use(verifyToken);
+// app.use(verifyToken);
 app.use('/generalUser',(req,res) => {
  return graphqlHTTP({      //Pravin -- This can be SelvitrendsQL
     //directing express-graphql to use this schema to map out the graph 
     //Pravin -- This is where we have written all our functions
     schema:userSchema,
-    context:{user:req.user.id},
+    context:{user:"sfs"},
     //directing express-graphql to use graphiql when goto '/graphql' address in the browser
     //which provides an interface to make GraphQl queries
     graphiql:true
