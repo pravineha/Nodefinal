@@ -10,7 +10,8 @@ const ProductSchema = new Schema({
         sizename:{type:String},
         size:{type:String}
     }],
-    img:{type:String,trim: true}
+    img:{type:String,trim: true},
+    price:{type:Number}
 });
 
 module.exports = mongoose.model('Product', ProductSchema);

@@ -17,7 +17,8 @@ const verifyToken =  require("./auth/verifyToken");
 var app = express();
 const cors = require('cors');
 //Mongo DB where we connect
-const mongoDBURI = 'mongodb+srv://sam:y1oOZo03nNkk3m1R@cluster0.nzptr.mongodb.net/Ecom?retryWrites=true&w=majority';
+//const mongoDBURI = 'mongodb+srv://sam:y1oOZo03nNkk3m1R@cluster0.nzptr.mongodb.net/  ?retryWrites=true&w=majority';
+const mongoDBURI = 'mongodb+srv://sam:y1oOZo03nNkk3m1R@cluster0.nzptr.mongodb.net/TestDB?retryWrites=true&w=majority';
 const adminMiddleware = (req, res, next) => {
   if(req.user && req.user.role == 44){
     next();
@@ -137,7 +138,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-mongoose.connect('mongodb+srv://sam:y1oOZo03nNkk3m1R@cluster0.nzptr.mongodb.net/Ecom?rettryWrites=true&w=majority')
+//mongoose.connect('mongodb+srv://sam:y1oOZo03nNkk3m1R@cluster0.nzptr.mongodb.net/Ecom?rettryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://sam:y1oOZo03nNkk3m1R@cluster0.nzptr.mongodb.net/TestDB?rettryWrites=true&w=majority')
 
 mongoose.connection.once('open', () => {
     console.log('conneted to database');

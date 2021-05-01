@@ -99,7 +99,8 @@ let ProductListComponent = class ProductListComponent {
           measurements{
             name,
             sizename,
-            size
+            size,
+            price
           }
       }
     }`;
@@ -224,8 +225,8 @@ let ProductListItemsComponent = class ProductListItemsComponent {
     addToCart() {
         //  console.log("id",prodId);
         if (this.quantity > 0) {
-            const { id, name, img } = this.product;
-            let cartObject = { id, img, name, quantity: this.quantity };
+            const { id, name, img,price } = this.product; //adding price
+            let cartObject = { id, img,price, name, quantity: this.quantity };//adding price
             cartObject["measurements"] = this.selectedMeasures;
             console.log("Measurement Index", cartObject);
             let cartItem = localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : null;

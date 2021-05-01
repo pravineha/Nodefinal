@@ -96,6 +96,17 @@
 
 }
 
+{
+  getProductBySectionId(sectionid:"604331ccf804e2ce97688aa7"){
+    name,
+    id,
+    createdDate, 
+    img,
+    price
+
+}
+
+
 }
 
 

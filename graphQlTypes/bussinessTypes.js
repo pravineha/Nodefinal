@@ -88,6 +88,7 @@ const ProductType = new GraphQLObjectType({
         createdDate: { type: GraphQLString },
         sectionId:{type:GraphQLString},
         img:{type:GraphQLString},
+        price:{type:GraphQLInt},
         measurements:{
            type: new GraphQLList(MeasureMentTypeOutPut),
        
@@ -104,6 +105,7 @@ const OrderProductInputType = new GraphQLInputObjectType({
         
         },
         createdFor:{ type: GraphQLString },
+        price:{type : GraphQLInt},
         address:{ type: GraphQLString },
         quantity:{type:new GraphQLNonNull(GraphQLInt)}
     })

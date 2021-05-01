@@ -12,9 +12,11 @@ const OrdersSchema = new Schema({
         createdFor:{type:String,default:"self"},
         address:{ type: String,default:"self" },
         quantity:{type:Number,default:1},
+        price:{type:Number,default:1},
     }],
     createdBy:{type: mongoose.Schema.Types.ObjectId, ref: 'users'},
     mobile:{ type: String },
+    orderAmount: {type: Number},
     createdDate: {type: Date, default: Date.now},
 });
 

@@ -7,6 +7,7 @@ const OrdersSchema = require("../models/order");
 const { GraphQLObjectType, GraphQLString, 
     GraphQLID, GraphQLInt,GraphQLSchema, 
     GraphQLList,GraphQLNonNull ,GraphQLObject } = graphql;
+//const OrderAmount
 
 //Schema defines data on the Graph like object types(book type), relation between 
 //these object types and descibes how it can reach into the graph to interact with 
@@ -18,7 +19,24 @@ var fakeBookDatabase = [
     { name: "Book 3", pages: 532, id: 3 }
 ]
 
+function orderAmount(productList)
+{
+    console.log("Product List",productList);
 
+ let OrderAmount=0;
+ for( var x=0; x <= productList.length; x++)
+ {
+    console.log("Product Price",productList[x].price);
+    console.log("Product quantity",productList[x].quantity);
+
+    //OrderAmount =  OrderAmount + (productList[x].quantity * productList[x].price);
+
+ }
+ console.log("OrderAmount",OrderAmount);
+
+return OrderAmount;
+
+}
 
 const UserQuery  = new GraphQLObjectType({
         name:"userQuery",
@@ -29,11 +47,17 @@ const UserQuery  = new GraphQLObjectType({
                   productList: {type:new GraphQLList(OrderProductInputType)},
                   mobile:{ type: GraphQLString },
               },resolve(parents,args,root){
-                 console.log("order",args.productList)
+                 console.log("order",args.productList);
+                // const totalOrderamout = orderAmount(args.productList);
+                // console.log("totalOrderamout",totalOrderamout);
+                console.log("Product Price",args.price);
+
                 let order = new OrdersSchema({
                     productList:[...args.productList],
                     createdBy:root.user,
-                    mobile:args.mobile
+                    mobile:args.mobile,
+                    price:args.price
+
                 })
                 return order.save();
               }
@@ -41,6 +65,9 @@ const UserQuery  = new GraphQLObjectType({
         }
     })
  
+
+
+
 //Creating a new GraphQL Schema, with options query which defines query 
 //we will allow users to use when they are making request.
 module.exports = new GraphQLSchema({
